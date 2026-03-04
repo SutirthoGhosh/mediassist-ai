@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>MediAssist AI - Medical Assistance Companion</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <div class="logo-circle">
+            <span class="logo-cross">+</span>
+          </div>
+          <div class="brand-text">
+            <h1>MediAssist <span class="brand-ai">AI</span></h1>
+            <p class="tagline">Smart symptom insights &amp; hospital guidance</p>
+          </div>
+        </div>
+        <div class="edu-badge" aria-label="Educational Use Only badge">
+          Educational Use Only
+        </div>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <div class="container main-grid">
+        <section class="card card-primary">
+          <h2>Symptom Checker</h2>
+          <p class="card-intro">
+            Enter your symptoms in your own words. MediAssist AI will suggest possible conditions,
+            severity level, and the type of specialist you may consider visiting.
+          </p>
+
+          <form id="symptom-form" novalidate>
+            <label for="symptoms" class="field-label">Describe your symptoms</label>
+            <textarea
+              id="symptoms"
+              name="symptoms"
+              rows="5"
+              maxlength="500"
+              placeholder="Example: I have had a high fever and dry cough for 3 days with body pain..."
+              required
+            ></textarea>
+            <div class="field-helper">
+              Avoid sharing personally identifiable details. Keep your description symptom-focused.
+            </div>
+
+            <div class="form-footer">
+              <button type="submit" class="btn btn-primary" id="analyze-btn">
+                <span class="btn-label">Analyze Symptoms</span>
+                <span class="btn-spinner" aria-hidden="true"></span>
+              </button>
+              <button type="button" class="btn btn-ghost" id="clear-btn">Clear</button>
+            </div>
+
+            <p class="validation-message" id="symptom-error" aria-live="polite"></p>
+          </form>
+
+          <div class="disclaimer-box">
+            <strong>Important:</strong>
+            <span>
+              This is not a medical diagnosis. Please consult a licensed doctor for any health
+              concerns or emergencies.
+            </span>
+          </div>
+        </section>
+
+        <section class="card card-result" id="result-card" aria-live="polite">
+          <div id="emergency-banner" class="emergency-banner" hidden>
+            <div class="emergency-indicator"></div>
+            <div class="emergency-text">
+              <h3>Potential Emergency Detected</h3>
+              <p>
+                Your symptoms may indicate a serious condition. Please seek immediate medical
+                attention.
+              </p>
+              <div class="emergency-actions">
+                <a class="btn btn-emergency" href="tel:112">Call 112 (National Emergency)</a>
+                <a class="btn btn-emergency-outline" href="tel:108">Call 108 (Ambulance)</a>
+              </div>
+            </div>
+          </div>
+
+          <h2>Assessment</h2>
+          <div id="analysis-placeholder" class="muted-text">
+            Your AI-assisted assessment will appear here after you submit your symptoms.
+          </div>
+
+          <div id="analysis-content" class="analysis-content" hidden>
+            <div id="red-flag-alert" class="red-flag-alert" hidden>
+              <div class="red-flag-title">Red-flag symptoms detected</div>
+              <div class="red-flag-body" id="red-flag-text"></div>
+            </div>
+
+            <div class="analysis-row">
+              <div>
+                <h3>Severity level</h3>
+                <p class="muted-text">Based on scoring and safety red-flag checks.</p>
+              </div>
+              <div class="severity-pill" id="severity-pill">
+                <span class="pill-label">Severity</span>
+                <span class="pill-value" id="severity-text"></span>
+              </div>
+            </div>
+
+            <div class="risk-meter" aria-label="Risk meter">
+              <div class="risk-meter-header">
+                <h3>Risk meter</h3>
+                <div class="risk-meter-value">
+                  <span id="risk-score-text">0</span><span class="risk-percent">%</span>
+                </div>
+              </div>
+              <div class="risk-bar">
+                <div id="risk-bar-fill" class="risk-bar-fill" style="width: 0%"></div>
+              </div>
+              <p class="muted-text" id="risk-helper">
+                Educational estimate only — not a diagnosis.
+              </p>
+            </div>
+
+            <div class="analysis-row">
+              <div>
+                <h3>Top possible conditions (Top 2)</h3>
+                <p class="muted-text">
+                  These are possible matches based on keywords and weighted scoring. Please consult a doctor for confirmation.
+                </p>
+              </div>
+            </div>
+
+            <div id="conditions-grid" class="conditions-grid"></div>
+
+            <p class="disclaimer-inline" id="disclaimer-text"></p>
+          </div>
+        </section>
+
+        <section class="card card-secondary">
+          <h2>Nearby Hospitals (Mocked)</h2>
+          <p class="card-intro">
+            With your permission, MediAssist AI can use your approximate location to simulate nearby
+            hospitals and estimate distances.
+          </p>
+
+          <button type="button" class="btn btn-secondary" id="locate-btn">
+            <span class="btn-label">Find Nearby Hospitals</span>
+            <span class="btn-spinner" aria-hidden="true"></span>
+          </button>
+          <p class="validation-message" id="location-error" aria-live="polite"></p>
+
+          <div id="hospital-list-container" class="hospital-list-container">
+            <p id="hospital-placeholder" class="muted-text">
+              No hospitals loaded yet. Use the button above to fetch nearby options.
+            </p>
+            <ul id="hospital-list" class="hospital-list" hidden></ul>
+          </div>
+
+          <div id="map-section" class="map-section" hidden>
+            <div class="map-header">
+              <h3>Map (OpenStreetMap)</h3>
+              <p class="muted-text">Tap markers to view hospital details.</p>
+            </div>
+            <div id="map" class="map-canvas" role="region" aria-label="Nearby hospitals map"></div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <div class="container footer-inner">
+        <p>
+          MediAssist AI is an educational tool and
+          <strong>does not provide medical diagnosis or treatment decisions.</strong> Always seek
+          professional medical advice.
+        </p>
+      </div>
+    </footer>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="script.js"></script>
+  </body>
+</html>
+

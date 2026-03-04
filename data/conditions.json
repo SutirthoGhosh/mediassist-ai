@@ -1,0 +1,84 @@
+[
+  {
+    "condition": "Common Cold",
+    "keywords": ["sneezing", "runny nose", "stuffy nose", "sore throat", "mild cough"],
+    "weightPerKeyword": 8,
+    "severity": "LOW",
+    "specialist": "General Physician",
+    "emergency": false,
+    "genericMedicines": ["paracetamol", "antihistamine", "saline nasal spray"]
+  },
+  {
+    "condition": "Seasonal Allergy",
+    "keywords": ["itchy eyes", "watery eyes", "pollen", "dust allergy", "allergic"],
+    "weightPerKeyword": 8,
+    "severity": "LOW",
+    "specialist": "Allergist / Immunologist",
+    "emergency": false,
+    "genericMedicines": ["antihistamine", "nasal spray"]
+  },
+  {
+    "condition": "Migraine",
+    "keywords": ["throbbing headache", "one side headache", "light sensitivity", "sound sensitivity", "nausea"],
+    "weightPerKeyword": 10,
+    "severity": "MEDIUM",
+    "specialist": "Neurologist",
+    "emergency": false,
+    "genericMedicines": ["paracetamol", "ibuprofen"]
+  },
+  {
+    "condition": "Gastritis / Acidity",
+    "keywords": ["burning chest", "acidity", "sour belching", "upper abdominal pain", "gastric"],
+    "weightPerKeyword": 10,
+    "severity": "MEDIUM",
+    "specialist": "Gastroenterologist",
+    "emergency": false,
+    "genericMedicines": ["antacid", "proton pump inhibitor"]
+  },
+  {
+    "condition": "Flu-like Illness (Cold/Flu/COVID-like symptoms)",
+    "keywords": ["fever", "dry cough", "loss of smell", "loss of taste", "body ache", "chills", "sore throat", "cough"],
+    "weightPerKeyword": 10,
+    "severity": "MEDIUM",
+    "specialist": "General Physician / Pulmonologist",
+    "emergency": false,
+    "genericMedicines": ["paracetamol", "cough syrup"]
+  },
+  {
+    "condition": "Possible Heart-related Emergency",
+    "keywords": ["severe chest pain", "chest pain", "left arm pain", "sweating with chest pain", "sudden shortness of breath", "heavy chest"],
+    "weightPerKeyword": 12,
+    "severity": "HIGH",
+    "specialist": "Cardiologist / Emergency Medicine",
+    "emergency": true,
+    "genericMedicines": []
+  },
+  {
+    "condition": "Severe Trauma / Injury",
+    "keywords": ["severe bleeding", "unconscious", "head injury", "fracture", "road accident"],
+    "weightPerKeyword": 12,
+    "severity": "HIGH",
+    "specialist": "Emergency Medicine / Orthopedic",
+    "emergency": true,
+    "genericMedicines": []
+  },
+  {
+    "condition": "Asthma Exacerbation",
+    "keywords": ["wheezing", "difficulty breathing", "tight chest", "asthma attack", "shortness of breath"],
+    "weightPerKeyword": 12,
+    "severity": "HIGH",
+    "specialist": "Pulmonologist / Emergency Medicine",
+    "emergency": true,
+    "genericMedicines": ["inhaler"]
+  },
+  {
+    "condition": "Food Poisoning / Gastroenteritis",
+    "keywords": ["vomiting", "diarrhea", "loose motion", "stomach cramps", "nausea"],
+    "weightPerKeyword": 10,
+    "severity": "MEDIUM",
+    "specialist": "General Physician / Gastroenterologist",
+    "emergency": false,
+    "genericMedicines": ["oral rehydration salts", "antacid"]
+  }
+]
+
